@@ -1,3 +1,6 @@
+/**
+ * Just a helper file to contain test data.
+ */
 public class TestData {
   public String getDeclarationOfIndependence() {
     return "\uFEFFThe unanimous Declaration of the thirteen united States of America, When in the "

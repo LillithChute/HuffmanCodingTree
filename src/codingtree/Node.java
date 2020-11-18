@@ -3,15 +3,16 @@ package codingtree;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents a 'group node' of the code tree.
+ */
 public class Node implements TreeOperations {
   // We need to marry the incoming code with the nodes containing the text character.
   // Essentially this string is mapped to the node.
   private final Map<String, TreeOperations> nodes;
-  private final String textRemaining;
 
   public Node() {
     nodes = new HashMap<>();
-    textRemaining = null;
   }
 
   @Override
@@ -19,19 +20,19 @@ public class Node implements TreeOperations {
     // Strip off the first character.
     String cipherKey = cipher.substring(0, 1);
 
-    switch (cipher.length()) {
-      // Last character.  This is the end. Put in the leaf the character.
-      case 1 -> nodes.put(cipherKey, new Leaf(textCharacter));
-      default -> {
-        // Do we have this in the tree or not?
-        // If not, we need to add a new node and put the key in it.
-        if (!nodes.containsKey(cipherKey)) {
-          nodes.put(cipherKey, new Node());
-        }
+    // Last character.  This is the end. Put in the leaf the character.
+    if (cipher.length() == 1) {
+      nodes.put(cipherKey, new Leaf(textCharacter));
 
-        // If it already exists, carry on.
-        nodes.get(cipherKey).addToTree(cipher.substring(1), textCharacter);
+      // Do we have this in the tree or not?
+      // If not, we need to add a new node and put the key in it.
+    } else {
+      if (!nodes.containsKey(cipherKey)) {
+        nodes.put(cipherKey, new Node());
       }
+
+      // If it already exists, carry on.
+      nodes.get(cipherKey).addToTree(cipher.substring(1), textCharacter);
     }
   }
 

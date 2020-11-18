@@ -1,4 +1,3 @@
-import encodeanddecode.Cipher;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -10,6 +9,11 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import encodeanddecode.Cipher;
+
+/**
+ * A main program to run the coding tree model.
+ */
 public class Driver {
   // File input and output variables.
   private static File file;
@@ -54,10 +58,7 @@ public class Driver {
       try {
         dictionary = Arrays.stream(dictionaryString.split("~"))
                 .map(split -> split.split("="))
-                .collect(Collectors.toMap(
-                        a -> a[0], // key
-                        a -> a[1]  // value
-                ));
+                .collect(Collectors.toMap(a -> a[0], a -> a[1]));
 
         System.out.println("This is the dictionary: " + dictionary.toString());
 
@@ -248,10 +249,7 @@ public class Driver {
 
       dictionary = Arrays.stream(dictionaryString.split("~"))
               .map(split -> split.split("="))
-              .collect(Collectors.toMap(
-                      a -> a[0], // key
-                      a -> a[1]  // value
-              ));
+              .collect(Collectors.toMap(a -> a[0], a -> a[1]));
 
       System.out.println("This is the dictionary: " + dictionary.toString());
 
