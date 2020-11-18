@@ -1,5 +1,8 @@
 package encodeanddecode;
 
+import codingtree.Node;
+import codingtree.TreeOperations;
+import codingtree.Tuple2;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,20 +10,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import codingtree.CharRemainder;
-import codingtree.Node;
-import codingtree.TreeOperations;
-
 /**
  * This is the implementation of the actual cipher work of encoding and decoding.
  */
-public class Cipher implements EncodeDecode{
+public class Cipher implements EncodeDecode {
   // We need the root.
   private final TreeOperations treeBase;
 
   // We need something to hold the incoming dictionary.
   private final Map<String, String> dictionaryForEncoding;
 
+  /**
+   * Creates an instance of a cipher object that takes in a symbol->code dictionary for
+   * encoding and decoding.
+   *
+   * @param encodingDictionary A symbol -> code dictionary.
+   */
   public Cipher(Map<String, String> encodingDictionary) {
     if (encodingDictionary == null) {
       throw new IllegalArgumentException("The encoding dictionary can't be null.");
@@ -48,6 +53,12 @@ public class Cipher implements EncodeDecode{
     while (i < textToEncode.length()) {
       // Grab the character
       String cipherKey = String.valueOf(textToEncode.charAt(i));
+
+      if (dictionaryForEncoding.get(cipherKey) == null) {
+        throw new IllegalArgumentException("This text contains symbols not provided "
+                + "in the dictionary.");
+      }
+
       encodedMessage.append(dictionaryForEncoding.get(cipherKey));
       i++;
     }
@@ -62,14 +73,14 @@ public class Cipher implements EncodeDecode{
       throw new IllegalArgumentException("Encoded text can't be null.");
     }
 
-    CharRemainder cr = treeBase.getCharacterBasedOnCipher(textToDecode);
-    StringBuilder decodedText = new StringBuilder(cr.ch);
+    Tuple2 cr = treeBase.getCharacterBasedOnCipher(textToDecode);
+    StringBuilder decodedText = new StringBuilder(cr.character);
 
     // As a character is removed from the list, we have the rest of the list remaining, so keep
     // looping through it until done.
-    while (cr.remainder.length() > 0) {
-      cr = treeBase.getCharacterBasedOnCipher(cr.remainder);
-      decodedText.append(cr.ch);
+    while (cr.cipherString.length() > 0) {
+      cr = treeBase.getCharacterBasedOnCipher(cr.cipherString);
+      decodedText.append(cr.character);
     }
 
     return decodedText.toString();
@@ -91,8 +102,8 @@ public class Cipher implements EncodeDecode{
             .filter(i -> cipherValues.get(i + 1)
                     .startsWith(cipherValues.get(i)))
             .forEachOrdered(i -> {
-      throw new IllegalArgumentException("This is NOT a prefix code.");
-    });
+              throw new IllegalArgumentException("This is NOT a prefix code.");
+            });
   }
 
   private TreeOperations initializeTree(Map<String, String> encodingDictionary) {

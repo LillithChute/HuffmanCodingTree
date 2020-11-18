@@ -19,5 +19,5 @@ public interface TreeOperations {
    * @param cipher The code.
    * @return The character.
    */
-  CharRemainder getCharacterBasedOnCipher(String cipher);
+  Tuple2 getCharacterBasedOnCipher(String cipher);
 }

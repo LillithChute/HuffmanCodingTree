@@ -3,7 +3,7 @@ package codingtree;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Node implements TreeOperations{
+public class Node implements TreeOperations {
   // We need to marry the incoming code with the nodes containing the text character.
   // Essentially this string is mapped to the node.
   private final Map<String, TreeOperations> nodes;
@@ -36,7 +36,7 @@ public class Node implements TreeOperations{
   }
 
   @Override
-  public CharRemainder getCharacterBasedOnCipher(String cipher) {
+  public Tuple2 getCharacterBasedOnCipher(String cipher) {
     // Decoding process.
     return nodes.get(cipher.substring(0, 1))
             .getCharacterBasedOnCipher(cipher.substring(1));

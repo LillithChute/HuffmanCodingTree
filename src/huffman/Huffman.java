@@ -11,8 +11,15 @@ import java.util.stream.IntStream;
  */
 public class Huffman {
   // Instead of building a priority queue, use the built in.
-  private PriorityQueue<String> pQueue;
+  private PriorityQueue<String> pqueue;
 
+  /**
+   * This creates the actual Huffman tree using the algorithm as per the video.
+   *
+   * @param text The text to use to create the tree.
+   * @param cipherCharacters The list of cipher characters
+   * @return A dictionary to use.
+   */
   public Map<String, String> createHuffmanTree(String text, List<Character> cipherCharacters) {
     // Validation section.
     if (text == null) {
@@ -31,13 +38,13 @@ public class Huffman {
 
     IntStream.range(0, text.length()).mapToObj(i -> String.valueOf(text.charAt(i)))
             .forEach(cipherKey -> {
-      // Count the frequency.  Put it in the frequency Map.  If we haven't seen it,
-      // it gets zero and then add one when we see a repeat of a character.
-      frequency.put(cipherKey, frequency.getOrDefault(cipherKey, 0) + 1);
+              // Count the frequency.  Put it in the frequency Map.  If we haven't seen it,
+              // it gets zero and then add one when we see a repeat of a character.
+              frequency.put(cipherKey, frequency.getOrDefault(cipherKey, 0) + 1);
 
-      // Now add to the encoding dictionary
-      dictionaryToEncode.put(cipherKey, "");
-    });
+              // Now add to the encoding dictionary
+              dictionaryToEncode.put(cipherKey, "");
+            });
 
     // Set up the priority queue as required by the assignment.
     initializePriorityQueue(frequency);
@@ -50,7 +57,7 @@ public class Huffman {
 
   // region Private methods.
   private void initializePriorityQueue(Map<String, Integer> frequency) {
-    this.pQueue = new PriorityQueue<>((a, b) -> {
+    this.pqueue = new PriorityQueue<>((a, b) -> {
       // Based on the algorithm, compare based on frequency first.  If those
       // are equivalent compare by alphabetical.
       if (!frequency.get(a).equals(frequency.get(b))) {
@@ -61,13 +68,13 @@ public class Huffman {
     });
 
     // Add all the stuff to the priority queue.
-    pQueue.addAll(frequency.keySet());
+    pqueue.addAll(frequency.keySet());
   }
 
   private void runHuffman(List<Character> cipherCharacters, Map<String, Integer> frequency,
                           Map<String, String> dictionaryToEncode) {
     // Loop through the queue.
-    while (pQueue.size() > 1) {
+    while (pqueue.size() > 1) {
       // Tracking variables.
       int freq = 0;
       StringBuilder addCipherText = new StringBuilder();
@@ -75,26 +82,26 @@ public class Huffman {
       // Loop over the cipher codes
       for (Character cipher : cipherCharacters) {
         // pop from the queue
-        String pQueueCipher = pQueue.remove();
+        String pqueueCipher = pqueue.remove();
 
         // Build the dictionary by putting the cipher code in it.
-        for (int i = 0; i < pQueueCipher.length(); i++) {
-          dictionaryToEncode.put(String.valueOf(pQueueCipher.charAt(i)),
-                  cipher + dictionaryToEncode.get(String.valueOf(pQueueCipher.charAt(i))));
+        for (int i = 0; i < pqueueCipher.length(); i++) {
+          dictionaryToEncode.put(String.valueOf(pqueueCipher.charAt(i)),
+                  cipher + dictionaryToEncode.get(String.valueOf(pqueueCipher.charAt(i))));
         }
 
         // Add the frequency for each cipher.
-        freq += frequency.get(pQueueCipher);
+        freq += frequency.get(pqueueCipher);
 
         // Add to the encoded string.
-        addCipherText.append(pQueueCipher);
+        addCipherText.append(pqueueCipher);
       }
 
       // add to the frequency table.
       frequency.put(addCipherText.toString(), freq);
 
       // Put into the priority queue.
-      pQueue.add(addCipherText.toString());
+      pqueue.add(addCipherText.toString());
     }
   }
   // endregion

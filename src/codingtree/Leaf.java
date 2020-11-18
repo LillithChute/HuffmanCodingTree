@@ -4,7 +4,7 @@ package codingtree;
  * This is the leaf of the code tree and it will hold the character associated with the
  * cipher code.
  */
-public class Leaf implements TreeOperations{
+public class Leaf implements TreeOperations {
   private final String textCharacter;
 
   public Leaf(String characterText) {
@@ -20,7 +20,7 @@ public class Leaf implements TreeOperations{
   }
 
   @Override
-  public CharRemainder getCharacterBasedOnCipher(String cipher) {
-    return new CharRemainder(textCharacter, cipher);
+  public Tuple2 getCharacterBasedOnCipher(String cipher) {
+    return new Tuple2(textCharacter, cipher);
   }
 }
