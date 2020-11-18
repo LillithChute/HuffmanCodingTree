@@ -1,5 +1,8 @@
 package codingtree;
 
+/**
+ * Helper class for the coding tree.  Used to store information about the cipher.
+ */
 public class Tuple2 {
 
   public final String character;
